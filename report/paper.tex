@@ -1,0 +1,106 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+\usepackage{etoolbox}
+\preto\textbf{\noindent}
+\usepackage{titling}
+
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{longtable}
+
+\title{Socioeconomic Attributes and Crime: Is Crime about the Economy?}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exploratory Data Analysis}
+\subsection*{Overview of Crime Data}
+\begin{itemize}
+    \item \textbf{Crime Incidents:} The dataset includes records from 2018 to the present, spanning various types of crimes categorized into:
+    \begin{itemize}
+        \item \textbf{Property Crime:} Includes burglary, theft, and vandalism.
+        \item \textbf{Violent Crime:} Includes assault, robbery, and homicide.
+        \item \textbf{Public Order and Other Crime:} Includes drug offenses, disorderly conduct, and traffic violations.
+    \end{itemize}
+    \item The total number of incidents across all years is 913,732, distributed across census tracts in San Francisco.
+    \item \textbf{Crime Dataset Column Descriptions:}To provide a clear understanding of the dataset used in this analysis, the following table outlines the key columns and their respective descriptions. Each column captures essential details related to crime incidents.
+
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|p{4cm}|p{10cm}|}
+         \hline
+        \textbf{Column Name} & \textbf{Description}\\ \hline
+         Incident Date & The date the incident occurred. \\ \hline
+         Incident Year & The year the incident occurred. \\ \hline
+         Incident Day of Week & The day of week the incident occurred. \\ \hline
+         Incident ID & Generated identifier for incident reports. \\ \hline
+         Filed Online & Indicates whether the police report was filed through an online reporting system which is designed for non-emergency incidents. \\ \hline
+         Incident Category & A classification provided by the Crime Analysis Unit of the Police Department for organizing and reporting incidents. \\ \hline
+         Incident Subcategory & A detailed classification that further specifies the categories defined in the Incident Category. \\ \hline
+         Resolution & The resolution of the incident at the time of the report. \\ \hline
+         Police District & The Police District where the incident occurred. \\ \hline
+         Latitude & The latitude coordinate in WGS84. \\ \hline
+         Longitude & The longitude coordinate in WGS84. \\ \hline
+         Point & Geolocation in OGC WKT format. \\ \hline
+    \end{tabular}
+    \label{tab:my_label}
+\end{table}
+    
+\end{itemize}
+
+\subsection*{Socioeconomic Indicators}
+\begin{itemize}
+    \item \textbf{Variables of Interest:} Median household income, poverty rate, unemployment rate, educational attainment (Bachelor's degree rate), and demographic proportions (e.g., racial composition).
+\end{itemize}
+
+\subsection*{Data Visualizations}
+\textbf{Crime Distribution by Category}
+
+The analysis reveals that the most common type of crime in San Francisco is larceny theft. Within the larceny theft category, the subcategory with the highest frequency is "Larceny - From Vehicle," followed by other subcategories such as general theft and shoplifting.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\linewidth]{pic1.png}
+    \caption{Crime Distribution by Category}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\noindent\textbf{Crime Distribution by District}
+
+The distribution of crime by police districts indicates that the Central District has the highest number of reported crimes. Within the Central District, the top two types of crime are larceny theft and malicious mischief, which are depicted in the pie chart.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\linewidth]{pic2.png}
+    \caption{Crime Distribution by District}
+    \label{fig:enter-label}
+\end{figure}
+
+\noindent\textbf{Monthly Crime Trends}
+
+The temporal trend of total crime counts and larceny theft incidents reveals significant fluctuations over time. Notably, during the first half of 2020, there was a sharp decline in both total crimes and larceny theft. After mid-2020, crime counts gradually increased, displaying seasonal variations but remaining below pre-2020 levels. Both total crimes and larceny theft exhibit similar patterns, with peaks and troughs occurring at consistent intervals, highlighting a strong correlation between these two metrics.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\linewidth]{pic3.png}
+    \caption{Monthly Crime Trends}
+    \label{fig:enter-label}
+\end{figure}
+
+\noindent\textbf{Key Insights from EDA}
+
+Larceny theft is the most common crime in San Francisco, with "Larceny - From Vehicle" being the leading subcategory. The Central District reports the highest number of crimes, primarily larceny theft and malicious mischief. Crime counts dropped sharply in early 2020 but gradually increased afterward. Socioeconomic factors, such as income, poverty, and education, play a role in shaping crime patterns.
+
+
+\end{document}
