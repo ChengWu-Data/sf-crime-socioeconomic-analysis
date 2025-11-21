@@ -1,95 +1,107 @@
-# Socioeconomic Drivers of Crime in San Francisco
+# 🏙 Socioeconomic Drivers of Crime in San Francisco
 
 This repository hosts an econometric and forecasting study on how socioeconomic factors relate to crime patterns in San Francisco.
 
-Using ~**913k incident-level crime records** linked to **ACS census-tract panel data (2017–2022)**, the project builds a pipeline for:
+Using **~913k incident-level crime records** linked to **ACS census-tract panel data (2017–2022)**, the project builds a pipeline capable of:
 
-- Spatial joining police incident data to census tracts  
-- Constructing a tract–year panel dataset  
-- Estimating fixed-effects and count models for crime rates  
-- Exploring time dynamics with ARIMAX/SARIMAX-style forecasting
+- Spatially joining police incident records to census tracts  
+- Constructing a tract–year longitudinal panel  
+- Estimating fixed-effects & count models for crime rates  
+- Exploring temporal structure with ARIMAX/SARIMAX-style forecasting
 
-> ⚠️ Note: Parts of the original data loading and cleaning code were based on course-provided starter material. This repo focuses on my contributions in panel construction, modeling design, and interpretation.
-
+> ⚠️ Note: Some initial data utilities were based on course-provided starter code.  
+> This repo highlights my contributions to panel construction, modeling design, interpretation, and visualization.
 ---
 
 ## 💡 Research Question
 
-> Is crime “about the economy”?  
-> Specifically, how do **inequality, unemployment, education, mobility, and population change** relate to crime patterns across time and space?
+> *Is crime “about the economy”?*  
+> Specifically: how do unemployment, inequality, mobility, and education relate to crime trends across space and time?
 
 ---
 
 ## 🧱 Data & Construction
 
-- **Crime data:**  
-  - ~913,732 incident-level records from SF Open Data  
-  - Fields include date, location (lat/long), offense type, resolution
+### **📍 Crime Data — SF Open Data Portal**
+- ~913,732 incident-level records
+- Fields include location, timestamp, offense type, resolution
 
-- **Socioeconomic data:**  
-  - ACS 5-year estimates at census tract level  
-  - Variables: income, unemployment, Gini/inequality measures, education, transit usage, racial composition, etc.
+### **📍 Socioeconomic Data — ACS (Census Bureau)**
+- 5-year estimates at census tract level
+- Variables: income, education, transit usage, inequality (Gini), race, etc.
 
-- **Key engineering steps:**
-  - Convert crime data to a GeoDataFrame and **spatially join** to census tracts
-  - Aggregate to a **tract × year** panel
-  - Create derived features:
-    - changes in crime counts and rates
-    - mobility & density metrics
-    - time dummies (pre-/post-COVID, crisis periods, etc.)
+### **🔧 Key Engineering Steps**
+- Convert incidents to GeoDataFrame → **spatial join to census tracts**
+- Aggregate to `tract × year` panel  
+- Derived features:
+  - Δ crime rates
+  - mobility & density
+  - COVID-era indicators
+  - population-weighted metrics
 
 ---
 
 ## 📊 Methods
 
-The analysis compares several modeling approaches:
-
-- **Fixed-effects models** for panel data
-  - tract fixed effects to control for unobserved heterogeneity
-  - year dummies for macro shocks
-
-- **Count models**
-  - Poisson and **Negative Binomial** to handle over-dispersion
-  - log crime counts and crime rates as outcomes
-
-- **Time-series & forecasting**
-  - ARIMAX / SARIMAX-style models on aggregated crime series
-  - inclusion of economic covariates and event indicators (e.g., COVID, policy changes)
+| Analytical Goal | Method |
+|----------------|--------|
+| Spatial aggregation | geopandas + shapely |
+| Panel inference | Fixed-effects models (tract FE, year FE) |
+| Count outcomes | Poisson / Negative Binomial |
+| Time structure | ARIMAX / SARIMAX |
+| Visualization | matplotlib / seaborn |
 
 ---
 
 ## 🔍 Key Findings (High-Level)
 
-- **Mobility & density are robust predictors**  
-  Higher public transit usage and mobility is consistently associated with higher crime rates across several categories.
+- Transit usage & mobility → **strong positive association** with crime
+- Unemployment & inequality → **sign flip when mobility controlled** (spatial sorting)
+- Education reduces violent/public order crime but **raises reported property crime**
+- COVID era → **public order ↓, property crime ↑**
 
-- **Inequality & unemployment behave differently than naive expectations**  
-  At the tract level, some models show *negative* associations once mobility and other factors are controlled, suggesting complex confounding and spatial sorting rather than a simple “more inequality → more crime” story.
-
-- **Education has asymmetric effects**  
-  Higher bachelor’s degree share tends to reduce violent/public order crime while correlating with higher reported property crime (e.g., more valuable targets, different reporting behavior).
-
-- **COVID-era shifts**  
-  Public order crimes decline while some property-related metrics rise, consistent with changes in activity patterns.
-
-These are framed as **model-based associations**, not causal claims.
+These are **model-based associations**, not causal claims.
 
 ---
 
-## 🧩 Why This Project Matters (for Analytics / BA / DS Roles)
+## 📈 Visual Highlights
 
-This project is less about policing policy and more about:
+### 🔹 Crime Volume by Category
+<img src="assets/figures/fig_category_distribution.png" width="650"/>
 
-- Designing and maintaining a **large-scale data pipeline** (geo joins, panel construction, aggregation)
-- Choosing appropriate models for **count data, panel structure, and over-dispersion**
-- Understanding the limits of individual-level prediction vs. **aggregate-level inference**
-- Turning complex statistical output into **clear narratives for decision-makers**
+Larceny Theft dominates overall incidents → motivates subcategory decomposition.
 
-The same skills are directly applicable to:
+---
 
-- demand & risk forecasting  
-- operational analytics (branch performance, region targeting)  
-- resource allocation models for business or public sector
+### 🔹 Crime Distribution by District
+<img src="assets/figures/fig_district_comparison.png" width="650"/>
+
+Concentration in Central, Tenderloin, Mission aligns with mobility & density patterns.
+
+---
+
+### 🔹 Time Trend: Total vs Larceny Theft
+<img src="assets/figures/fig_time_trend.png" width="650"/>
+
+COVID shock created structural breaks relevant for forecasting.
+
+---
+
+## 🧩 Why This Matters (Applied Analytics Perspective)
+
+This project illustrates:
+
+- **Large-scale data → coherent analytical pipeline**
+- Choosing correct models for **over-dispersed longitudinal count data**
+- Distinguishing **individual prediction vs aggregate inference**
+- Presenting results in a **decision-oriented format**
+
+These skills transfer to:
+
+- demand forecasting  
+- branch performance + mobility analysis  
+- resource allocation in public & private sectors  
+- data products combining spatial + temporal signals
 
 ---
 
@@ -98,16 +110,21 @@ The same skills are directly applicable to:
 ```text
 .
 ├── notebooks/
-│   └── sf_crime_socioecon_analysis.ipynb   # main analysis notebook
+│   ├── 01_preprocessing.ipynb
+│   └── analysis.pdf
 ├── report/
 │   ├── Socioeconomic_Attributes_and_Crime.pdf
-│   └── main.tex                            # LaTeX source (optional)
+│   └── paper.tex
+├── assets/
+│   └── figures/
+│       ├── fig_category_distribution.png
+│       ├── fig_district_comparison.png
+│       └── fig_time_trend.png
 ├── data/
-│   └── README_DATA.md                      # links & notes about data sources
+│   └── README_DATA.md
 └── env/
-    └── requirements.txt                    # optional environment file
-```
----
+    └── requirements.txt
+
 Raw datasets not included due to size and licensing.
 
 ---
